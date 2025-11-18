@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Selamat Ulang Tahun Sayaaaang</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(135deg, #ff9ec0 0%, #ffd3e0 50%, #ff9ec0 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+    
+    /* Start overlay */
+    .start-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 158, 192, 0.95);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      backdrop-filter: blur(5px);
+    }
+    
+    .start-content {
+      text-align: center;
+      color: white;
+      padding: 40px;
+    }
+    
+    .start-button {
+      background: #ff4d7d;
+      color: white;
+      border: none;
+      padding: 15px 40px;
+      font-size: 18px;
+      border-radius: 50px;
+      cursor: pointer;
+      margin-top: 30px;
+      font-family: "Poppins", sans-serif;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      transition: all 0.3s;
+    }
+    
+    .start-button:hover {
+      background: #cc0066;
+      transform: scale(1.05);
+    }
+    
+    /* Birthday decorations */
+    .decoration {
+      position: fixed;
+      z-index: 0;
+    }
+    
+    .balloon {
+      width: 60px;
+      height: 70px;
+      border-radius: 50%;
+      position: absolute;
+      animation: float 15s infinite ease-in-out;
+    }
+    
+    .balloon::after {
+      content: '';
+      position: absolute;
+      bottom: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 2px;
+      height: 40px;
+      background: rgba(255, 255, 255, 0.5);
+    }
+    
+    .balloon:nth-child(1) {
+      background: radial-gradient(circle at 30% 30%, #ff4d7d, #ff1a5c);
+      top: 10%;
+      left: 10%;
+      animation-delay: 0s;
+    }
+    
+    .balloon:nth-child(2) {
+      background: radial-gradient(circle at 30% 30%, #4a3aff, #3528d4);
+      top: 15%;
+      right: 15%;
+      animation-delay: 1s;
+    }
+    
+    .balloon:nth-child(3) {
+      background: radial-gradient(circle at 30% 30%, #ffcc00, #ff9900);
+      bottom: 20%;
+      left: 5%;
+      animation-delay: 2s;
+    }
+    
+    .balloon:nth-child(4) {
+      background: radial-gradient(circle at 30% 30%, #00cc66, #00994d);
+      bottom: 15%;
+      right: 10%;
+      animation-delay: 3s;
+    }
+    
+    .confetti {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background: #ff4d7d;
+      opacity: 0.7;
+      animation: confetti-fall 5s infinite linear;
+    }
+    
+    .confetti:nth-child(5) {
+      background: #4a3aff;
+      left: 20%;
+      animation-delay: 0s;
+    }
+    
+    .confetti:nth-child(6) {
+      background: #ffcc00;
+      left: 40%;
+      animation-delay: 1s;
+    }
+    
+    .confetti:nth-child(7) {
+      background: #00cc66;
+      left: 60%;
+      animation-delay: 2s;
+    }
+    
+    .confetti:nth-child(8) {
+      background: #ff4d7d;
+      left: 80%;
+      animation-delay: 3s;
+    }
+    
+    .confetti:nth-child(9) {
+      background: #4a3aff;
+      left: 30%;
+      animation-delay: 4s;
+    }
+    
+    .confetti:nth-child(10) {
+      background: #ffcc00;
+      left: 70%;
+      animation-delay: 5s;
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(0); }
+      50% { transform: translateY(-20px) rotate(5deg); }
+    }
+    
+    @keyframes confetti-fall {
+      0% { transform: translateY(-100vh) rotate(0); opacity: 1; }
+      100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+    }
+    
+    .book-container {
+      position: relative;
+      width: 400px;
+      height: 550px;
+      perspective: 2000px;
+      z-index: 10;
+    }
+    
+    .book {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.5s ease;
+    }
+    
+    .page {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      transform-origin: left center;
+      transition: transform 1.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+      transform-style: preserve-3d;
+      border-radius: 8px 0 0 8px;
+      box-shadow: 
+        0 5px 15px rgba(0, 0, 0, 0.1),
+        inset 5px 0 10px rgba(0, 0, 0, 0.05);
+      overflow: hidden;
+    }
+    
+    .page:nth-child(1) { z-index: 5; }
+    .page:nth-child(2) { z-index: 4; }
+    .page:nth-child(3) { z-index: 3; }
+    .page:nth-child(4) { z-index: 2; }
+    .page:nth-child(5) { z-index: 1; }
+    
+    .front, .back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 40px;
+      box-sizing: border-box;
+      background: white;
+      border-radius: 8px 0 0 8px;
+    }
+    
+    .back {
+      transform: rotateY(180deg);
+      background: linear-gradient(to right, #fff9fb, #ffeef2);
+    }
+    
+    .page.flipped {
+      transform: rotateY(-180deg);
+    }
+    
+    .page h2 {
+      margin-top: 0;
+      font-size: 28px;
+      color: #ff4d7d;
+      text-align: center;
+      margin-bottom: 20px;
+      transition: all 0.6s ease;
+    }
+    
+    .page p {
+      font-size: 18px;
+      line-height: 1.6;
+      text-align: center;
+      color: #333;
+      transition: all 0.6s ease;
+    }
+    
+    .page.flipped .front h2,
+    .page.flipped .front p {
+      opacity: 0;
+    }
+    
+    .back-content {
+      text-align: center;
+      color: #555;
+    }
+    
+    .back-content h3 {
+      color: #ff4d7d;
+      margin-bottom: 15px;
+    }
+    
+    .back-content p {
+      font-size: 16px;
+      line-height: 1.5;
+    }
+    
+    .book-spine {
+      position: absolute;
+      left: -20px;
+      top: 0;
+      width: 20px;
+      height: 100%;
+      background: linear-gradient(to right, #cc0066, #ff4d7d);
+      border-radius: 8px 0 0 8px;
+      box-shadow: inset -5px 0 10px rgba(0, 0, 0, 0.2);
+      z-index: 10;
+    }
+    
+    .book-shadow {
+      position: absolute;
+      bottom: -30px;
+      left: 0;
+      width: 100%;
+      height: 30px;
+      background: radial-gradient(ellipse at center, rgba(204, 0, 102, 0.3) 0%, rgba(0,0,0,0) 70%);
+      border-radius: 50%;
+      z-index: -1;
+    }
+    
+    .instruction {
+      position: absolute;
+      bottom: -60px;
+      left: 0;
+      width: 100%;
+      text-align: center;
+      color: #cc0066;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    
+    .heart {
+      color: #ff4d7d;
+      animation: heartbeat 1.5s infinite;
+      display: inline-block;
+    }
+    
+    .cake {
+      font-size: 40px;
+      margin-bottom: 20px;
+      animation: bounce 2s infinite;
+    }
+    
+    @keyframes heartbeat {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+    
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    
+    .page-number {
+      position: absolute;
+      bottom: 15px;
+      right: 15px;
+      font-size: 14px;
+      color: #ff9ec0;
+    }
+    
+    .birthday-text {
+      background: linear-gradient(45deg, #ff4d7d, #ff9900, #4a3aff, #00cc66);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      font-weight: bold;
+    }
+    
+    /* Styles for photo page */
+    .photo-container {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+    
+    .photo-frame {
+      width: 250px;
+      height: 250px;
+      border-radius: 20px;
+      background: linear-gradient(45deg, #ff4d7d, #ff9900);
+      padding: 5px;
+      margin: 5px 0;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .photo-placeholder {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #ffeef2, #ffd3e0);
+      border-radius: 15px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: #ff4d7d;
+      font-size: 14px;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+    
+    .photo-placeholder .camera-icon {
+      font-size: 50px;
+      margin-bottom: 10px;
+    }
+    
+    .photo-instruction {
+      font-size: 12px;
+      margin-top: 10px;
+      color: #cc0066;
+    }
+    
+    .celebration-emoji {
+      font-size: 30px;
+      margin: 10px 0;
+      animation: bounce 1s infinite;
+    }
+  </style>
+</head>
+<body>
+  <!-- Start Overlay -->
+  <div class="start-overlay" id="startOverlay">
+    <div class="start-content">
+      <div class="cake" style="font-size: 60px;">🎂</div>
+      <h1 style="color: white; font-size: 32px; margin-bottom: 20px;">Ih ada apa yaaa ini</h1>
+      <p style="color: white; font-size: 18px; margin-bottom: 30px;">Klik tombol di bawah kalau penasaran yaaa</p>
+      <button class="start-button" id="startButton">Klik aku dong, klik aku</button>
+    </div>
+  </div>
+
+  <!-- Birthday decorations -->
+  <div class="decoration balloon"></div>
+  <div class="decoration balloon"></div>
+  <div class="decoration balloon"></div>
+  <div class="decoration balloon"></div>
+  
+  <div class="decoration confetti"></div>
+  <div class="decoration confetti"></div>
+  <div class="decoration confetti"></div>
+  <div class="decoration confetti"></div>
+  <div class="decoration confetti"></div>
+  <div class="decoration confetti"></div>
+  
+  <div class="book-container">
+    <div class="book" id="book">
+      <div class="book-spine"></div>
+      
+      <div class="page">
+        <div class="front">
+          <div class="cake">🎂</div>
+          <h2>Eh ada kamu! <span class="heart"></span></h2>
+          <p>Tau gak siih, ada yang ulang tahun looh hari ini. Flip halaman ini pelan-pelan ya…</p>
+        </div>
+      </div>
+
+      <div class="page">
+        <div class="front">
+          <div class="photo-container">
+            <div class="celebration-emoji">🎉🎉🎉</div>
+            <h2>SELAMAT ULANG TAHUN!</h2>
+            <p>BUBUBKU SAYANGKU CINTAKUUU</p>
+            <div class="photo-frame">
+              <img src="foto/ultah.jpg" alt="Foto Ulang Tahun" style="width:100%;height:100%;object-fit:cover;border-radius:15px;">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="page">
+        <div class="front">
+          <h2>haaaaaiii sayaaaang, aku mau ngucapin happy birthdaaaay yaaaaaa hehehehe</h2>
+          <p>cieeee udah 18 ajaaaaa, apa baruuu yaaa? WKWKWK semogaaaaa kamuu makin lucuuuuu makin imuuuuuttt makin cantiiiiiik makin pinteeer makinn sayaaaang sama akuuu hehe dan semogaaa semuaaa yang kamu semogakaan tersemogakan yaaa, aamiin…</p>
+        </div>
+      </div>
+
+      <div class="page">
+        <div class="front">
+          <h2>i really hope you love this gift</h2>
+          <p>di ulang tahunmu kali ini aku cuman bisa ngasih hadiah ini buub. aku belum bisaaa ngajak kamu jalan-jalann, kayaak yang kamu lakuin pas di hari ulang tahunku, yaaah LDR begini lah yaaa bub WKWKWK, tapi aku harap kamuuu sukaaa yaa sama hadiah ku ini</p>
+          <div class="photo-frame">
+            <img src="foto/190624.jpg" alt="Foto Ulang Tahun" style="width:100%;height:100%;object-fit:cover;border-radius:15px;">
+          </div>
+        </div>
+      </div>
+
+      <div class="page">
+        <div class="front">
+          <h2>makasih ya sayaaaang</h2>
+          <p>aku mau berterima kasih selama ini udaaah sabar dengan sikap aku. kamu selalu bisa nenangin, ngerti dan tetap ada buat aku. makasih ya sayaaaang, i love youuu 💖 nanti kalau ada waktu kita keliling Bandung yaaah</p>
+          <div class="photo-frame">
+            <img src="foto/loveyou.jpg" alt="Foto Ulang Tahun" style="width:100%;height:100%;object-fit:cover;border-radius:15px;">
+          </div>
+        </div>
+      </div>
+
+      <div class="page">
+        <div class="front">
+          <h2>Maaf hanyaaa ini saja</h2>
+          <p>hanyaaa beberapa tulisan dan foto kita bersama yang bisa aku rangkai dalam website yang tidak sempurna ini. fotonya pun jugaaa itu-itu ajaa kan bub hehehe. tandanya apaa? tandanyaaa harus lebih sering ketemuuu biar banyak foto-fotonyaaa WKWKWK. Next time yaaa bub, kitaaa hadiahkan ulang tahun kamu ini dengan jalan-jalan. okeeeeei? HEHEHE mungkin segitu ajaaa hadiah dari akuu, dadaaaah sayaaaang, i love you soo maaach 💖💖💖</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="book-shadow"></div>
+    <div class="instruction">Di pencet bukunya ajaa bub buat balik halamannya. <span class="heart">➜</span></div>
+  </div>
+
+  <!-- Audio Element -->
+  <audio id="birthdayMusic" loop>
+    <source src="musik/Ingin Dekatmu.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const pages = document.querySelectorAll('.page');
+      const startOverlay = document.getElementById('startOverlay');
+      const startButton = document.getElementById('startButton');
+      const music = document.getElementById('birthdayMusic');
+      let currentPage = 0;
+      
+      // Start button functionality
+      startButton.addEventListener('click', () => {
+        // Play music
+        music.play().catch(error => {
+          console.log('Music play failed:', error);
+        });
+        
+        // Hide overlay
+        startOverlay.style.display = 'none';
+      });
+      
+      // Page flipping functionality
+      pages.forEach((page, index) => {
+        page.addEventListener('click', () => {
+          // Only flip if this is the current page
+          if (index === currentPage && !page.classList.contains('flipped')) {
+            page.classList.add('flipped');
+            currentPage++;
+            
+            // Add a slight delay before showing the next page content
+            setTimeout(() => {
+              if (currentPage < pages.length) {
+                pages[currentPage].style.zIndex = pages.length + 1;
+              }
+            }, 300);
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>
